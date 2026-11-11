@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090d0c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fitness Pro">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Fitness Pro</title>
+<style>
+:root{color-scheme:dark;--bg:#090d0c;--panel:#151d19;--panel2:#1c2922;--line:#29382f;--green:#58d68d;--muted:#a6b4aa;--white:#f2f7f3}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+header{padding:22px 18px 14px;background:linear-gradient(145deg,#17251d,#0c120f)}h1{font-size:23px;margin:0 0 5px;letter-spacing:.3px}.sub{color:var(--muted);font-size:12px}
+nav{display:flex;gap:7px;padding:12px;position:sticky;top:0;background:#090d0cf2;backdrop-filter:blur(12px);z-index:3}
+nav button{flex:1;padding:10px 4px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--muted);font-size:12px}
+nav button.active{background:#1c3a29;color:var(--green);border-color:#34774e}
+main{padding:4px 14px 30px;max-width:700px;margin:auto}.hero{background:linear-gradient(135deg,#183525,#14231b);border:1px solid #2d6040;border-radius:20px;padding:17px;margin:8px 0 15px}
+.hero .big{font-size:27px;font-weight:800;color:var(--green)}.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}
+h2{font-size:18px;margin:12px 2px}h3{font-size:15px;margin:0 0 6px}
+small,.muted{color:var(--muted)}.muted{font-size:12px}
+select,input,textarea{background:#0e1511;color:var(--white);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;max-width:100%}
+input[type=number]{width:86px}input[type=checkbox]{accent-color:var(--green);width:19px;height:19px}
+.exercise{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:center;border-bottom:1px solid var(--line);padding:12px 0}.exercise:last-child{border:0}
+button.primary{background:var(--green);color:#07110a;border:0;border-radius:12px;padding:12px 15px;font-weight:750}
+button.secondary{background:var(--panel2);color:var(--white);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.hidden{display:none!important}
+.progress{height:9px;background:#2a352e;border-radius:20px;overflow:hidden;margin:9px 0}.progress span{display:block;height:100%;background:var(--green);width:0}
+label{display:flex;align-items:center;gap:9px}.meal{padding:11px 0;border-bottom:1px solid var(--line)}.meal:last-child{border:0}
+footer{text-align:center;color:#819087;font-size:11px;padding:20px}
+</style>
+</head>
+<body>
+<header><h1>FITNESS PRO</h1><div class="sub">DEIN TRAININGSBEGLEITER · OFFLINE NUTZBAR</div></header>
+<nav>
+<button class="active" data-tab="training">Training</button><button data-tab="weights">Gewichte</button><button data-tab="food">Ernährung</button><button data-tab="progress">Verlauf</button>
+</nav>
+<main>
+<section id="training">
+<div class="hero"><div class="sub">DEIN WOCHENPLAN</div><div class="big">4 Trainingstage</div><div class="muted">Mit Erholungstagen zwischen den Einheiten</div></div>
+<div class="row"><h2>Training auswählen</h2><select id="day"><option>Montag</option><option>Dienstag</option><option>Donnerstag</option><option>Samstag</option></select></div>
+<div class="card"><div class="row"><h3 id="dayTitle">Montag · Oberkörper A</h3><span class="muted" id="count"></span></div><div id="exerciseList"></div>
+<div class="actions"><button class="primary" id="completeWorkout">Training als erledigt markieren</button><button class="secondary" id="resetChecks">Häkchen zurücksetzen</button></div>
+<p class="muted">Wähle ein Häkchen nach jeder Übung. Trainiere kontrolliert, ohne Schmerzen und mit ausreichenden Pausen. Lass dir die Geräte-Einstellung bei Bedarf von einer qualifizierten Aufsicht zeigen.</p>
+</div>
+</section>
+<section id="weights" class="hidden">
+<h2>Deine Arbeitsgewichte</h2><p class="muted">Die eingetragenen Startwerte kannst du nach Bedarf anpassen. Notiere nur Gewichte, die du sicher und technisch sauber bewegen kannst.</p>
+<div class="card" id="weightList"></div><div class="actions"><button class="primary" id="saveWeights">Gewichte speichern</button></div>
+</section>
+<section id="food" class="hidden">
+<div class="hero"><div class="sub">ERNÄHRUNG</div><div class="big">Ausgewogen essen</div><div class="muted">Regelmäßige Mahlzeiten und abwechslungsreiche Lebensmittel unterstützen Erholung und Training.</div></div>
+<h2>Wochenideen</h2><div class="row"><span class="muted">Tag auswählen</span><select id="foodDay"></select></div><div class="card" id="mealList"></div>
+<p class="muted">Keine starre Eiweiß- oder Kalorienvorgabe: Der passende Bedarf hängt unter anderem von Alter, Entwicklung und Aktivität ab. Bei konkreten Ernährungszielen hilft eine qualifizierte Ernährungsfachkraft.</p>
+</section>
+<section id="progress" class="hidden">
+<h2>Dein Trainingsverlauf</h2><div class="hero"><div class="sub">DIESE WOCHE</div><div class="big" id="weeklyCount">0 / 4</div><div class="progress"><span id="weeklyBar"></span></div><div class="muted">Abgeschlossene Einheiten</div></div>
+<div class="card"><h3>Abgeschlossene Trainings</h3><div id="history"></div></div>
+<div class="card"><h3>Notizen</h3><textarea id="notes" rows="4" style="width:100%" placeholder="Wie hat sich das Training angefühlt? Was möchtest du festhalten?"></textarea><div class="actions"><button class="primary" id="saveNotes">Notiz speichern</button></div></div>
+<div class="actions"><button class="secondary" id="exportData">Daten exportieren</button><button class="secondary" id="clearData">Alle App-Daten löschen</button></div>
+</section>
+</main>
+<footer>Fitness Pro · Deine Daten bleiben auf diesem Gerät gespeichert.</footer>
+<script>
+const plans={
+"Montag":{title:"Oberkörper A",items:[["Brustpresse",45,3,"8–12"],["Latzugmaschine",41,3,"8–12"],["Rudermaschine",41,3,"8–12"],["Butterfly",36,2,"10–15"],["Schulterpresse",27,2,"10–12"],["Bizepsmaschine",41,2,"10–12"],["Trizepspresse",60,2,"10–12"]]},
+"Dienstag":{title:"Unterkörper A",items:[["Beinpresse",100,4,"10–12"],["Beinbeuger",45,3,"10–12"],["Wadenheben",null,3,"12–15"],["Bauchmaschine",null,2,"12–15"],["Laufband",null,1,"15 Minuten, locker"]]},
+"Donnerstag":{title:"Oberkörper B",items:[["Brustpresse",45,2,"10–12"],["Butterfly",36,3,"10–15"],["Latzugmaschine",41,3,"10–12"],["Rudermaschine",41,2,"10–12"],["Schulterpresse",27,2,"10–12"],["Bizepsmaschine",41,2,"10–12"],["Trizepspresse",60,2,"10–12"]]},
+"Samstag":{title:"Unterkörper B",items:[["Beinpresse",100,3,"10–12"],["Beinbeuger",45,3,"10–12"],["Wadenheben",null,3,"12–15"],["Bauchmaschine",null,2,"12–15"],["Laufband",null,1,"15 Minuten, locker"]]}}
+const initialWeights={"Brustpresse":45,"Butterfly":36,"Latzugmaschine":41,"Rudermaschine":41,"Schulterpresse":27,"Bizepsmaschine":41,"Trizepspresse":60,"Beinpresse":100,"Beinbeuger":45};
+const food={
+"Montag":["Skyr mit Haferflocken und Banane","Hähnchen mit Reis und Gemüse","Magerquark mit Beeren","Vollkornbrot mit Hüttenkäse"],
+"Dienstag":["Eier mit Vollkornbrot","Linseneintopf","Skyr oder Naturjoghurt","Vollkornbrot mit Putenbrust und Hüttenkäse"],
+"Mittwoch":["Magerquark mit Haferflocken","Vollkornnudeln mit Hähnchen","Naturjoghurt und Nüsse","Omelett mit Käse"],
+"Donnerstag":["Skyr mit Müsli","Kartoffeln mit Kräuterquark","Hüttenkäse mit Gemüse","Hähnchen-Wrap"],
+"Freitag":["Eier, Vollkornbrot und Joghurt","Lachs mit Reis und Brokkoli","Quark mit Obst","Vollkornbrot mit Putenbrust"],
+"Samstag":["Haferflocken mit Skyr","Putenhackbällchen mit Kartoffeln","Hüttenkäse","Rührei mit Vollkornbrot"],
+"Sonntag":["Quark mit Banane und Haferflocken","Chili con Carne mit Reis","Skyr oder Joghurt","Käsebrot mit Ei"]};
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+let weights=load("fp_weights",initialWeights), history=load("fp_history",[]), notes=load("fp_notes","");
+const $=id=>document.getElementById(id);
+function renderTraining(){let d=$("day").value,p=plans[d];$("dayTitle").textContent=d+" · "+p.title;$("count").textContent=p.items.length+" Positionen";$("exerciseList").innerHTML=p.items.map((x,i)=>`<div class="exercise"><div><strong>${x[0]}</strong><div class="muted">${x[2]} Sätze · ${x[3]}</div></div><label><input type="checkbox" class="excheck"> <span class="muted">${x[1]===null?"individuell":(weights[x[0]]??x[1])+" kg"}</span></label></div>`).join("")}
+function renderWeights(){$("weightList").innerHTML=Object.entries(weights).map(([n,w])=>`<div class="exercise"><strong>${n}</strong><label><input type="number" min="0" step="1" data-weight="${n}" value="${w}"> kg</label></div>`).join("")}
+function renderFood(){let d=$("foodDay").value;$("mealList").innerHTML=food[d].map((m,i)=>`<div class="meal"><label><input type="checkbox"> ${m}</label></div>`).join("")}
+function renderHistory(){$("weeklyCount").textContent=history.length+" / 4";$("weeklyBar").style.width=Math.min(100,history.length/4*100)+"%";$("history").innerHTML=history.length?history.slice().reverse().map(x=>`<div class="meal">${x.day} · ${x.date}</div>`).join(""):'<span class="muted">Noch keine Einheiten eingetragen.</span>'}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x===b));["training","weights","food","progress"].forEach(t=>$(t).classList.toggle("hidden",t!==b.dataset.tab));if(b.dataset.tab==="progress")renderHistory()});
+$("day").onchange=renderTraining;$("foodDay").innerHTML=Object.keys(food).map(d=>`<option>${d}</option>`).join("");$("foodDay").onchange=renderFood;
+$("completeWorkout").onclick=()=>{let d=$("day").value;if(!history.some(x=>x.day===d&&x.date===new Date().toLocaleDateString("de-DE"))){history.push({day:d,date:new Date().toLocaleDateString("de-DE")});localStorage.setItem("fp_history",JSON.stringify(history))}renderHistory();alert("Training gespeichert!")};
+$("resetChecks").onclick=()=>document.querySelectorAll(".excheck").forEach(x=>x.checked=false);
+$("saveWeights").onclick=()=>{document.querySelectorAll("[data-weight]").forEach(x=>{let v=Number(x.value);if(v>0)weights[x.dataset.weight]=v});localStorage.setItem("fp_weights",JSON.stringify(weights));renderTraining();alert("Gewichte gespeichert!")};
+$("saveNotes").onclick=()=>{notes=$("notes").value;localStorage.setItem("fp_notes",JSON.stringify(notes));alert("Notiz gespeichert!")};
+$("exportData").onclick=()=>{let blob=new Blob([JSON.stringify({weights,history,notes},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="fitness-pro-daten.json";a.click();URL.revokeObjectURL(a.href)};
+$("clearData").onclick=()=>{if(confirm("Wirklich alle gespeicherten App-Daten löschen?")){localStorage.clear();weights={...initialWeights};history=[];notes="";$("notes").value="";renderWeights();renderTraining();renderHistory()}};
+$("notes").value=notes;$("day").value="Montag";$("foodDay").value="Montag";renderTraining();renderWeights();renderFood();renderHistory();
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));
+</script>
+</body></html>
